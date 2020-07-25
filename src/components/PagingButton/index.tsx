@@ -4,7 +4,7 @@ import { Container, Button } from './styles';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   selected: boolean;
-  onClick(): void;
+  onClick: () => void;
 }
 
 const PagingButton: React.FC<ButtonProps> = ({

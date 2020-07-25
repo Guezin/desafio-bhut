@@ -13,10 +13,11 @@ export interface ICar {
 
 interface IProps {
   car: ICar;
-  handleDeleteCar?(): void;
+  handleEditCar?: () => void;
+  handleDeleteCar?: () => void;
 }
 
-const Car: React.FC<IProps> = ({ car, handleDeleteCar }) => {
+const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
   return (
     <Container>
       <header>
@@ -37,7 +38,7 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar }) => {
         </section>
 
         <div>
-          <EditButton>
+          <EditButton onClick={handleEditCar}>
             <FiEdit3 size={20} color="#fff" />
           </EditButton>
 

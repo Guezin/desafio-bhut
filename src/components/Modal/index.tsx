@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ReactModal from 'react-modal';
 
 export interface IModalProps {
   isOpen: boolean;
-  setIsOpen(): void;
+  setIsOpen: () => void;
 }
 
 const Modal: React.FC<IModalProps> = ({ isOpen, setIsOpen, children }) => {
