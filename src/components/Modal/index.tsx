@@ -7,12 +7,6 @@ export interface IModalProps {
 }
 
 const Modal: React.FC<IModalProps> = ({ isOpen, setIsOpen, children }) => {
-  const [modalStatus, setModalStatus] = useState(isOpen);
-
-  useEffect(() => {
-    setModalStatus(isOpen);
-  }, [isOpen]);
-
   return (
     <ReactModal
       isOpen={isOpen}

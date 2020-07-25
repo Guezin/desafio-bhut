@@ -7,6 +7,7 @@ import Car, { ICar } from '../../components/Car';
 import Input from '../../components/Input';
 import Button from '../../components/PagingButton';
 import ModalAddCar from '../../components/ModalAddCar';
+import ModalDeleteCar from '../../components/ModalDeleteCar';
 
 import {
   Container,
@@ -23,6 +24,7 @@ interface IButtonsPage {
 const Home: React.FC = () => {
   const [_cars, setCars] = useState<ICar[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(5);
@@ -59,9 +61,13 @@ const Home: React.FC = () => {
     setCurrentPage(page);
   }, []);
 
-  const toggleModal = useCallback(() => {
+  const toggleModalAddCar = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  const toggleModalDeleteCar = useCallback(() => {
+    setDeleteModalOpen(!deleteModalOpen);
+  }, [deleteModalOpen]);
 
   useEffect(() => {
     const loadTheCars = async () => {
@@ -82,12 +88,16 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <ModalAddCar isOpen={modalOpen} setIsOpen={() => toggleModal()} />
+      <ModalAddCar isOpen={modalOpen} setIsOpen={() => toggleModalAddCar()} />
+      <ModalDeleteCar
+        isOpen={deleteModalOpen}
+        setIsOpen={() => toggleModalDeleteCar()}
+      />
 
       <h1>Carros</h1>
 
       <section>
-        <button type="button" onClick={toggleModal}>
+        <button type="button" onClick={toggleModalAddCar}>
           Adicionar carro
         </button>
 
@@ -101,7 +111,7 @@ const Home: React.FC = () => {
       </section>
 
       {_cars.map((car, index) => (
-        <Car key={index} car={car} />
+        <Car key={index} car={car} handleDeleteCar={toggleModalDeleteCar} />
       ))}
 
       <ContainerPagingButtons>
