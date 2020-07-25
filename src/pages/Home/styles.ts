@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
 
 export const Container = styled.div`
   > h1 {
+    margin-top: 32px;
     color: #fff;
     font-size: 54px;
   }
@@ -14,14 +16,19 @@ export const Container = styled.div`
     justify-content: space-between;
 
     button {
-      padding: 8px 24px;
+      padding: 12px 24px;
       font-size: 16px;
       font-weight: 500;
       color: #fff;
       border: 0;
       border-radius: 4px;
+      transition: background-color 0.2s;
 
       background-color: #00cb76;
+
+      &:hover {
+        background-color: ${shade(0.2, '#00cb76')};
+      }
     }
   }
 `;

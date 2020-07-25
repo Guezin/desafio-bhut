@@ -22,7 +22,7 @@ interface IButtonsPage {
 
 const Home: React.FC = () => {
   const [_cars, setCars] = useState<ICar[]>([]);
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(5);

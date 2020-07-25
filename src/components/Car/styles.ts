@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding: 8px 32px;
+  padding: 12px 32px;
   border-radius: 6px;
   background-color: #fff;
 
@@ -18,7 +18,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  padding: 12px 0;
+  padding: 8px 0;
 
   display: flex;
   align-items: center;
@@ -34,6 +34,11 @@ export const Content = styled.div`
     p + p {
       margin-left: 32px;
     }
+  }
+
+  > div {
+    position: relative;
+    bottom: 16px;
   }
 `;
 
