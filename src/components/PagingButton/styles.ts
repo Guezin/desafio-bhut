@@ -30,8 +30,11 @@ export const Container = styled.div<ContainerProps>`
 
   &:hover {
     border: 2px solid #fff;
-    color: #fff;
     background-color: #7159c1;
+
+    button {
+      color: #fff;
+    }
   }
 
   & + div {
