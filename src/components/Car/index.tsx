@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FiEdit3, FiTrash2 } from 'react-icons/fi';
 
 import { Container, Content, EditButton, DeleteButton } from './styles';
@@ -13,11 +13,15 @@ export interface ICar {
 
 interface IProps {
   car: ICar;
-  handleEditCar?: () => void;
-  handleDeleteCar?: () => void;
+  handleEditCar: (car: ICar) => void;
+  handleDeleteCar: () => void;
 }
 
 const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
+  const setEditingCar = useCallback(() => {
+    handleEditCar(car);
+  }, [handleEditCar, car]);
+
   return (
     <Container>
       <header>
@@ -38,7 +42,7 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
         </section>
 
         <div>
-          <EditButton onClick={handleEditCar}>
+          <EditButton onClick={setEditingCar}>
             <FiEdit3 size={20} color="#fff" />
           </EditButton>
 

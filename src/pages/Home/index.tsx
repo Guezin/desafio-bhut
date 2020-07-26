@@ -8,6 +8,7 @@ import Input from '../../components/Input';
 import Button from '../../components/PagingButton';
 import ModalAddCar from '../../components/ModalAddCar';
 import ModalDeleteCar from '../../components/ModalDeleteCar';
+import ModalEditCar from '../../components/ModalEditCar';
 
 import {
   Container,
@@ -22,9 +23,11 @@ interface IButtonsPage {
 }
 
 const Home: React.FC = () => {
-  const [_cars, setCars] = useState<ICar[]>([]);
+  const [cars, setCars] = useState<ICar[]>([]);
+  const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(5);
@@ -43,13 +46,13 @@ const Home: React.FC = () => {
   );
 
   const handlePagination = useCallback(
-    (cars: ICar[]) => {
+    (_cars: ICar[]) => {
       const startPage = (currentPage - 1) * limit;
       const endPage = currentPage * limit;
 
-      const numberOfCarsToBeDisplayed = cars.slice(startPage, endPage);
+      const numberOfCarsToBeDisplayed = _cars.slice(startPage, endPage);
 
-      const buttons = handlePagingButtons(cars.length);
+      const buttons = handlePagingButtons(_cars.length);
 
       setPagingButtons(buttons);
       setCars(numberOfCarsToBeDisplayed);
@@ -68,6 +71,18 @@ const Home: React.FC = () => {
   const toggleModalDeleteCar = useCallback(() => {
     setDeleteModalOpen(!deleteModalOpen);
   }, [deleteModalOpen]);
+
+  const toggleModalEditCar = useCallback(() => {
+    setEditModalOpen(!editModalOpen);
+  }, [editModalOpen]);
+
+  const handleEditCar = useCallback(
+    (car) => {
+      setEditingCar(car);
+      toggleModalEditCar();
+    },
+    [toggleModalEditCar]
+  );
 
   useEffect(() => {
     const loadTheCars = async () => {
@@ -88,10 +103,15 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <ModalAddCar isOpen={modalOpen} setIsOpen={() => toggleModalAddCar()} />
+      <ModalAddCar isOpen={modalOpen} setIsOpen={toggleModalAddCar} />
       <ModalDeleteCar
         isOpen={deleteModalOpen}
-        setIsOpen={() => toggleModalDeleteCar()}
+        setIsOpen={toggleModalDeleteCar}
+      />
+      <ModalEditCar
+        isOpen={editModalOpen}
+        setIsOpen={toggleModalEditCar}
+        editingCar={editingCar}
       />
 
       <h1>Carros</h1>
@@ -110,8 +130,13 @@ const Home: React.FC = () => {
         </ContentSearch>
       </section>
 
-      {_cars.map((car, index) => (
-        <Car key={index} car={car} handleDeleteCar={toggleModalDeleteCar} />
+      {cars.map((car, index) => (
+        <Car
+          key={index}
+          car={car}
+          handleDeleteCar={toggleModalDeleteCar}
+          handleEditCar={handleEditCar}
+        />
       ))}
 
       <ContainerPagingButtons>
