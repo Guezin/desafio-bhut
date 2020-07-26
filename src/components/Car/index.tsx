@@ -18,14 +18,11 @@ interface IProps {
 }
 
 const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
-  // const { setCarToBeDeleted } = useDelete();
-
   const setEditingCar = useCallback(() => {
     handleEditCar(car);
   }, [handleEditCar, car]);
 
   const setDeleteCar = useCallback(() => {
-    // setCarToBeDeleted(car.id);
     handleDeleteCar(car.id);
   }, [handleDeleteCar, car.id]);
 

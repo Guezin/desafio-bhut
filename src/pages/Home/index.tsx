@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { FiFilter, FiSearch } from 'react-icons/fi';
 
 import api from '../../services/api';
 
 import Car, { ICar } from '../../components/Car';
-import Input from '../../components/Input';
+import InputSearch from '../../components/InputSearch';
 import Button from '../../components/PagingButton';
 import ModalAddCar from '../../components/ModalAddCar';
 import ModalDeleteCar from '../../components/ModalDeleteCar';
@@ -23,7 +23,11 @@ interface IButtonsPage {
 }
 
 const Home: React.FC = () => {
+  const [carsFound, setCarsFound] = useState<ICar[]>([]);
   const [cars, setCars] = useState<ICar[]>([]);
+  const [numberOfCarsToBeDisplayed, setNumberOfCarsToBeDisplayed] = useState<
+    ICar[]
+  >([]);
   const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,12 +55,12 @@ const Home: React.FC = () => {
       const startPage = (currentPage - 1) * limit;
       const endPage = currentPage * limit;
 
-      const numberOfCarsToBeDisplayed = _cars.slice(startPage, endPage);
+      const CarsToBeDisplayed = _cars.slice(startPage, endPage);
 
       const buttons = handlePagingButtons(_cars.length);
 
       setPagingButtons(buttons);
-      setCars(numberOfCarsToBeDisplayed);
+      setNumberOfCarsToBeDisplayed(CarsToBeDisplayed);
     },
     [currentPage, limit, handlePagingButtons]
   );
@@ -93,17 +97,62 @@ const Home: React.FC = () => {
     [toggleModalDeleteCar]
   );
 
+  const handleSearchValue = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const result = cars.filter((car) => car.title === event.target.value);
+
+      if (result.length > 0) {
+        return setCarsFound(result);
+      }
+
+      if (!result.length) {
+        handlePagination(cars);
+      }
+
+      setCarsFound([]);
+    },
+    [cars, handlePagination]
+  );
+
+  const handleCarsFound = useMemo(() => {
+    if (carsFound.length) {
+      handlePagination(carsFound);
+    }
+
+    return carsFound.map((car, index) => (
+      <Car
+        key={index}
+        car={car}
+        handleDeleteCar={handleDeleteCar}
+        handleEditCar={handleEditCar}
+      />
+    ));
+  }, [carsFound, handleDeleteCar, handleEditCar, handlePagination]);
+
+  const handleNumberOfCarsToBeDisplayed = useMemo(() => {
+    return numberOfCarsToBeDisplayed.map((car, index) => (
+      <Car
+        key={index}
+        car={car}
+        handleDeleteCar={handleDeleteCar}
+        handleEditCar={handleEditCar}
+      />
+    ));
+  }, [numberOfCarsToBeDisplayed, handleDeleteCar, handleEditCar]);
+
   useEffect(() => {
     const loadTheCars = async () => {
       // const { data } = await api.get<ICar[]>('/cars');
+
       const data = Array.from({ length: 50 }, (_, index) => ({
         id: '5dba13f8a9497b001d834b62',
-        title: 'fusca',
+        title: `fusca${index}`,
         brand: 'volkswagen',
         price: `100${index * 5}`,
         age: 14,
       }));
 
+      setCars(data);
       handlePagination(data);
     };
 
@@ -136,18 +185,15 @@ const Home: React.FC = () => {
 
           <Separator />
 
-          <Input icon={FiSearch} placeholder="Buscar..." />
+          <InputSearch
+            icon={FiSearch}
+            placeholder="Buscar..."
+            onChange={handleSearchValue}
+          />
         </ContentSearch>
       </section>
 
-      {cars.map((car, index) => (
-        <Car
-          key={index}
-          car={car}
-          handleDeleteCar={handleDeleteCar}
-          handleEditCar={handleEditCar}
-        />
-      ))}
+      {carsFound.length ? handleCarsFound : handleNumberOfCarsToBeDisplayed}
 
       <ContainerPagingButtons>
         {pagingButtons.map((button) => (
