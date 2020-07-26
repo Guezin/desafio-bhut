@@ -14,13 +14,20 @@ export interface ICar {
 interface IProps {
   car: ICar;
   handleEditCar: (car: ICar) => void;
-  handleDeleteCar: () => void;
+  handleDeleteCar: (id: string) => void;
 }
 
 const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
+  // const { setCarToBeDeleted } = useDelete();
+
   const setEditingCar = useCallback(() => {
     handleEditCar(car);
   }, [handleEditCar, car]);
+
+  const setDeleteCar = useCallback(() => {
+    // setCarToBeDeleted(car.id);
+    handleDeleteCar(car.id);
+  }, [handleDeleteCar, car.id]);
 
   return (
     <Container>
@@ -46,7 +53,7 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
             <FiEdit3 size={20} color="#fff" />
           </EditButton>
 
-          <DeleteButton onClick={handleDeleteCar}>
+          <DeleteButton onClick={setDeleteCar}>
             <FiTrash2 size={20} color="#fff" />
           </DeleteButton>
         </div>

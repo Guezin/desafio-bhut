@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FiTrash2, FiXSquare } from 'react-icons/fi';
 
-import Modal, { IModalProps } from '../Modal';
+import Modal from '../Modal';
 
 import {
   Content,
@@ -10,7 +10,23 @@ import {
   CancelButton,
 } from './styles';
 
-const ModalDeleteCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+interface IModalProps {
+  isOpen: boolean;
+  setIsOpen: () => void;
+  carToBeDeleted: string;
+}
+
+const ModalDeleteCar: React.FC<IModalProps> = ({
+  isOpen,
+  setIsOpen,
+  carToBeDeleted,
+}) => {
+  const handleDeleteCar = useCallback(() => {
+    console.log(carToBeDeleted);
+
+    setIsOpen();
+  }, [carToBeDeleted, setIsOpen]);
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Content>
@@ -25,7 +41,7 @@ const ModalDeleteCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
             </div>
           </CancelButton>
 
-          <DeleteButton type="button">
+          <DeleteButton type="button" onClick={handleDeleteCar}>
             <p>Excluir</p>
 
             <div>

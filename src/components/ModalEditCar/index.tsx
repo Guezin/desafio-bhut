@@ -22,9 +22,14 @@ const ModalEditCar: React.FC<IModalProps> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback((data) => {
-    console.log(data);
-  }, []);
+  const handleSubmit = useCallback(
+    (data) => {
+      console.log(data);
+
+      setIsOpen();
+    },
+    [setIsOpen]
+  );
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

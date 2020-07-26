@@ -25,6 +25,7 @@ interface IButtonsPage {
 const Home: React.FC = () => {
   const [cars, setCars] = useState<ICar[]>([]);
   const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
+  const [carToBeDeleted, setCarToBeDeleted] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -68,10 +69,6 @@ const Home: React.FC = () => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  const toggleModalDeleteCar = useCallback(() => {
-    setDeleteModalOpen(!deleteModalOpen);
-  }, [deleteModalOpen]);
-
   const toggleModalEditCar = useCallback(() => {
     setEditModalOpen(!editModalOpen);
   }, [editModalOpen]);
@@ -82,6 +79,18 @@ const Home: React.FC = () => {
       toggleModalEditCar();
     },
     [toggleModalEditCar]
+  );
+
+  const toggleModalDeleteCar = useCallback(() => {
+    setDeleteModalOpen(!deleteModalOpen);
+  }, [deleteModalOpen]);
+
+  const handleDeleteCar = useCallback(
+    (id: string) => {
+      setCarToBeDeleted(id);
+      toggleModalDeleteCar();
+    },
+    [toggleModalDeleteCar]
   );
 
   useEffect(() => {
@@ -107,6 +116,7 @@ const Home: React.FC = () => {
       <ModalDeleteCar
         isOpen={deleteModalOpen}
         setIsOpen={toggleModalDeleteCar}
+        carToBeDeleted={carToBeDeleted}
       />
       <ModalEditCar
         isOpen={editModalOpen}
@@ -134,7 +144,7 @@ const Home: React.FC = () => {
         <Car
           key={index}
           car={car}
-          handleDeleteCar={toggleModalDeleteCar}
+          handleDeleteCar={handleDeleteCar}
           handleEditCar={handleEditCar}
         />
       ))}
