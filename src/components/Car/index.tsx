@@ -1,5 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { FiEdit3, FiTrash2 } from 'react-icons/fi';
+
+import formatValue from '../../utils/formatValue';
 
 import { Container, Content, EditButton, DeleteButton } from './styles';
 
@@ -26,6 +28,10 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
     handleDeleteCar(car.id);
   }, [handleDeleteCar, car.id]);
 
+  const formattedPrice = useMemo(() => {
+    return formatValue(Number(car.price));
+  }, [car.price]);
+
   return (
     <Container>
       <header>
@@ -39,10 +45,7 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
             ano:
             {car.age}
           </p>
-          <p>
-            R$
-            {car.price}
-          </p>
+          <p>{formattedPrice}</p>
         </section>
 
         <div>

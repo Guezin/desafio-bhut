@@ -65,7 +65,7 @@ const Home: React.FC = () => {
     [currentPage, limit, handlePagingButtons]
   );
 
-  const handleChangePage = useCallback((page) => {
+  const handleChangePage = useCallback(page => {
     setCurrentPage(page);
   }, []);
 
@@ -78,7 +78,7 @@ const Home: React.FC = () => {
   }, [editModalOpen]);
 
   const handleEditCar = useCallback(
-    (car) => {
+    car => {
       setEditingCar(car);
       toggleModalEditCar();
     },
@@ -99,10 +99,11 @@ const Home: React.FC = () => {
 
   const handleSearchValue = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const result = cars.filter((car) => car.title === event.target.value);
+      const result = cars.filter(car => car.title === event.target.value);
 
       if (result.length > 0) {
-        return setCarsFound(result);
+        setCarsFound(result);
+        return;
       }
 
       if (!result.length) {
@@ -242,7 +243,7 @@ const Home: React.FC = () => {
       {carsFound.length ? handleCarsFound : handleNumberOfCarsToBeDisplayed}
 
       <ContainerPagingButtons>
-        {pagingButtons.map((button) => (
+        {pagingButtons.map(button => (
           <Button
             key={button.id}
             type="button"
