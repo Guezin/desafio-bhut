@@ -39,6 +39,7 @@
     "import/prefer-default-export": "off",
     "no-unused-expressions": "off",
     "no-undef": "off",
+    "array-callback-return": "off",
     "import/extensions": [
       "error",
       "ignorePackages",

@@ -8,7 +8,7 @@ export const Container = styled.div`
 
   display: flex;
 
-  input {
+  > input {
     width: 100%;
     border: 0;
     font-size: 16px;

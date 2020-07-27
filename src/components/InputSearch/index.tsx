@@ -1,18 +1,16 @@
 import React, { InputHTMLAttributes } from 'react';
-import { IconBaseProps } from 'react-icons';
+import { FiSearch } from 'react-icons/fi';
 
 import { Container } from './styles';
 
-interface InputSearchProps extends InputHTMLAttributes<HTMLInputElement> {
-  icon: React.ComponentType<IconBaseProps>;
-}
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
-const InputSearch: React.FC<InputSearchProps> = ({ icon: Icon, ...rest }) => {
+const InputSearch: React.FC<InputProps> = ({ ...rest }) => {
   return (
     <Container>
       <input {...rest} />
 
-      <Icon size={20} color="#aaa" />
+      <FiSearch size={20} color="#aaa" />
     </Container>
   );
 };

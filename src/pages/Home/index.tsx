@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { FiFilter, FiSearch } from 'react-icons/fi';
 
 import api from '../../services/api';
 
 import Car, { ICar } from '../../components/Car';
 import InputSearch from '../../components/InputSearch';
+import Filter from '../../components/Filter';
 import Button from '../../components/PagingButton';
 import ModalAddCar from '../../components/ModalAddCar';
 import ModalDeleteCar from '../../components/ModalDeleteCar';
@@ -144,13 +144,63 @@ const Home: React.FC = () => {
     const loadTheCars = async () => {
       // const { data } = await api.get<ICar[]>('/cars');
 
-      const data = Array.from({ length: 50 }, (_, index) => ({
-        id: '5dba13f8a9497b001d834b62',
-        title: `fusca${index}`,
-        brand: 'volkswagen',
-        price: `100${index * 5}`,
-        age: 14,
-      }));
+      const data = [
+        {
+          id: '5dba13f8a9497b001d834b62',
+          title: 'fusca',
+          brand: 'volkswagen',
+          price: '8000',
+          age: 1987,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b63',
+          title: 'variant',
+          brand: 'volkswagen',
+          price: '13000',
+          age: 1990,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b64',
+          title: 'Gol G5',
+          brand: 'volkswagen',
+          price: '27500',
+          age: 2013,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b65',
+          title: 'Uno 1.0',
+          brand: 'FIAT',
+          price: '10500',
+          age: 2002,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b66',
+          title: 'BWM M3',
+          brand: 'BMW',
+          price: '120000',
+          age: 2018,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b67',
+          title: 'Audi a3',
+          brand: 'audi',
+          price: '28500',
+          age: 2013,
+        },
+
+        {
+          id: '5dba13f8a9497b001d834b68',
+          title: 'Jeep',
+          brand: 'jeep',
+          price: '60000',
+          age: 2017,
+        },
+      ];
 
       setCars(data);
       handlePagination(data);
@@ -181,15 +231,11 @@ const Home: React.FC = () => {
         </button>
 
         <ContentSearch>
-          <FiFilter size={20} color="#fff" />
+          <Filter cars={cars} pagination={handlePagination} />
 
           <Separator />
 
-          <InputSearch
-            icon={FiSearch}
-            placeholder="Buscar..."
-            onChange={handleSearchValue}
-          />
+          <InputSearch placeholder="Buscar..." onChange={handleSearchValue} />
         </ContentSearch>
       </section>
 

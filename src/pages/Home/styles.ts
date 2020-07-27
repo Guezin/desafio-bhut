@@ -15,7 +15,7 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    button {
+    > button {
       padding: 12px 24px;
       font-size: 16px;
       font-weight: 500;
