@@ -120,9 +120,9 @@ const Home: React.FC = () => {
       handlePagination(carsFound);
     }
 
-    return carsFound.map((car, index) => (
+    return carsFound.map(car => (
       <Car
-        key={index}
+        key={car.id}
         car={car}
         handleDeleteCar={handleDeleteCar}
         handleEditCar={handleEditCar}
@@ -131,9 +131,9 @@ const Home: React.FC = () => {
   }, [carsFound, handleDeleteCar, handleEditCar, handlePagination]);
 
   const handleNumberOfCarsToBeDisplayed = useMemo(() => {
-    return numberOfCarsToBeDisplayed.map((car, index) => (
+    return numberOfCarsToBeDisplayed.map(car => (
       <Car
-        key={index}
+        key={car.id}
         car={car}
         handleDeleteCar={handleDeleteCar}
         handleEditCar={handleEditCar}
@@ -143,65 +143,65 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const loadTheCars = async () => {
-      // const { data } = await api.get<ICar[]>('/cars');
+      const { data } = await api.get<ICar[]>('/cars');
 
-      const data = [
-        {
-          id: '5dba13f8a9497b001d834b62',
-          title: 'fusca',
-          brand: 'volkswagen',
-          price: '8000',
-          age: 1987,
-        },
+      // const data = [
+      //   {
+      //     id: '5dba13f8a9497b001d834b62',
+      //     title: 'fusca',
+      //     brand: 'volkswagen',
+      //     price: '8000',
+      //     age: 1987,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b63',
-          title: 'variant',
-          brand: 'volkswagen',
-          price: '13000',
-          age: 1990,
-        },
+      //   {
+      //     id: '5dba13f8a9497b001d834b63',
+      //     title: 'variant',
+      //     brand: 'volkswagen',
+      //     price: '13000',
+      //     age: 1990,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b64',
-          title: 'Gol G5',
-          brand: 'volkswagen',
-          price: '27500',
-          age: 2013,
-        },
+      //   {
+      //     id: '5dba13f8a9497b001d834b64',
+      //     title: 'Gol G5',
+      //     brand: 'volkswagen',
+      //     price: '27500',
+      //     age: 2013,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b65',
-          title: 'Uno 1.0',
-          brand: 'FIAT',
-          price: '10500',
-          age: 2002,
-        },
+      //   {
+      //     id: '5dba13f8a9497b001d834b65',
+      //     title: 'Uno 1.0',
+      //     brand: 'FIAT',
+      //     price: '10500',
+      //     age: 2002,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b66',
-          title: 'BWM M3',
-          brand: 'BMW',
-          price: '120000',
-          age: 2018,
-        },
+      //   {
+      //     id: '5dba13f8a9497b001d834b66',
+      //     title: 'BWM M3',
+      //     brand: 'BMW',
+      //     price: '120000',
+      //     age: 2018,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b67',
-          title: 'Audi a3',
-          brand: 'audi',
-          price: '28500',
-          age: 2013,
-        },
+      //   {
+      //     id: '5dba13f8a9497b001d834b67',
+      //     title: 'Audi a3',
+      //     brand: 'audi',
+      //     price: '28500',
+      //     age: 2013,
+      //   },
 
-        {
-          id: '5dba13f8a9497b001d834b68',
-          title: 'Jeep',
-          brand: 'jeep',
-          price: '60000',
-          age: 2017,
-        },
-      ];
+      //   {
+      //     id: '5dba13f8a9497b001d834b68',
+      //     title: 'Jeep',
+      //     brand: 'jeep',
+      //     price: '60000',
+      //     age: 2017,
+      //   },
+      // ];
 
       setCars(data);
       handlePagination(data);
