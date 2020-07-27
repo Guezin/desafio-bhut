@@ -12,6 +12,7 @@ export const Container = styled.div`
     width: 100%;
     border: 0;
     font-size: 18px;
+    text-transform: capitalize;
 
     &::placeholder {
       color: #aaa;
