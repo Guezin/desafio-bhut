@@ -5,11 +5,11 @@ import { PaginationProvider } from './pagination';
 import { FilterProvider } from './filter';
 
 const AppProvider: React.FC = ({ children }) => (
-  <PaginationProvider>
-    <CarProvider>
-      <FilterProvider>{children}</FilterProvider>
-    </CarProvider>
-  </PaginationProvider>
+  <FilterProvider>
+    <PaginationProvider>
+      <CarProvider>{children}</CarProvider>
+    </PaginationProvider>
+  </FilterProvider>
 );
 
 export default AppProvider;

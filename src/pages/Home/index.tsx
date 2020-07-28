@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 
 import { useCar } from '../../hooks/car';
 import { usePagination } from '../../hooks/pagination';
-import { useFilter } from '../../hooks/filter';
 
 import Car, { ICar } from '../../components/Car';
 import InputSearch from '../../components/InputSearch';
@@ -20,20 +19,18 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
+  const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   const { setCarToBeDeleted } = useCar();
-  const { carsFound } = useFilter();
   const {
-    handlePagination,
     currentPage,
     setCurrentPage,
     pagingButtons,
     numberOfCarsToBeDisplayed,
   } = usePagination();
-
-  const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const toggleModalAddCar = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -43,6 +40,10 @@ const Home: React.FC = () => {
     setEditModalOpen(!editModalOpen);
   }, [editModalOpen]);
 
+  const toggleModalDeleteCar = useCallback(() => {
+    setDeleteModalOpen(!deleteModalOpen);
+  }, [deleteModalOpen]);
+
   const handleEditCar = useCallback(
     car => {
       setEditingCar(car);
@@ -51,10 +52,6 @@ const Home: React.FC = () => {
     [toggleModalEditCar]
   );
 
-  const toggleModalDeleteCar = useCallback(() => {
-    setDeleteModalOpen(!deleteModalOpen);
-  }, [deleteModalOpen]);
-
   const handleDeleteCar = useCallback(
     (_id: string) => {
       setCarToBeDeleted(_id);
@@ -62,32 +59,6 @@ const Home: React.FC = () => {
     },
     [toggleModalDeleteCar, setCarToBeDeleted]
   );
-
-  const handleCarsFound = useMemo(() => {
-    if (carsFound.length) {
-      handlePagination(carsFound);
-    }
-
-    return carsFound.map(car => (
-      <Car
-        key={car._id}
-        car={car}
-        handleDeleteCar={handleDeleteCar}
-        handleEditCar={handleEditCar}
-      />
-    ));
-  }, [carsFound, handleDeleteCar, handleEditCar, handlePagination]);
-
-  const handleNumberOfCarsToBeDisplayed = useMemo(() => {
-    return numberOfCarsToBeDisplayed.map(car => (
-      <Car
-        key={car._id}
-        car={car}
-        handleDeleteCar={handleDeleteCar}
-        handleEditCar={handleEditCar}
-      />
-    ));
-  }, [numberOfCarsToBeDisplayed, handleDeleteCar, handleEditCar]);
 
   return (
     <Container>
@@ -118,7 +89,14 @@ const Home: React.FC = () => {
         </ContentSearch>
       </section>
 
-      {carsFound.length ? handleCarsFound : handleNumberOfCarsToBeDisplayed}
+      {numberOfCarsToBeDisplayed.map(car => (
+        <Car
+          key={car._id}
+          car={car}
+          handleDeleteCar={handleDeleteCar}
+          handleEditCar={handleEditCar}
+        />
+      ))}
 
       <ContainerPagingButtons>
         {pagingButtons.map(button => (

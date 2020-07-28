@@ -1,7 +1,6 @@
-import React, { InputHTMLAttributes, useState, useCallback } from 'react';
+import React, { InputHTMLAttributes, useCallback } from 'react';
 import { FiSearch } from 'react-icons/fi';
 
-import { useFilter } from '../../hooks/filter';
 import { useCar } from '../../hooks/car';
 import { usePagination } from '../../hooks/pagination';
 

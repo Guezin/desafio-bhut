@@ -1,10 +1,6 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+
+import { useFilter } from './filter';
 
 import { ICar } from '../components/Car';
 
@@ -28,6 +24,8 @@ const PaginationProvider: React.FC = ({ children }) => {
   const [limit] = useState(5);
   const [pagingButtons, setPagingButtons] = useState<IButtonsPage[]>([]);
 
+  const { carsFound } = useFilter();
+
   const [numberOfCarsToBeDisplayed, setNumberOfCarsToBeDisplayed] = useState<
     ICar[]
   >([]);
@@ -49,14 +47,42 @@ const PaginationProvider: React.FC = ({ children }) => {
       const startPage = (currentPage - 1) * limit;
       const endPage = currentPage * limit;
 
-      const CarsToBeDisplayed = cars.slice(startPage, endPage);
+      let carsToBeDisplayed: ICar[] = [];
 
-      const buttons = handlePagingButtons(cars.length);
+      if (cars.length > limit) {
+        const result = cars.slice(startPage, endPage);
 
-      setPagingButtons(buttons);
-      setNumberOfCarsToBeDisplayed(CarsToBeDisplayed);
+        carsToBeDisplayed = result;
+      }
+
+      if (cars.length < limit) {
+        carsToBeDisplayed = cars;
+      }
+
+      if (carsFound.length > limit) {
+        const result = carsFound.slice(startPage, endPage);
+
+        carsToBeDisplayed = result;
+
+        setPagingButtons(handlePagingButtons(carsFound.length));
+        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
+
+        return;
+      }
+
+      if (carsFound.length > 0 && carsFound.length < limit) {
+        carsToBeDisplayed = carsFound;
+
+        setPagingButtons([]);
+        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
+
+        return;
+      }
+
+      setPagingButtons(handlePagingButtons(cars.length));
+      setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
     },
-    [currentPage, limit, handlePagingButtons]
+    [currentPage, limit, handlePagingButtons, carsFound]
   );
 
   return (

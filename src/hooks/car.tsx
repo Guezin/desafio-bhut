@@ -96,53 +96,93 @@ const CarProvider: React.FC = ({ children }) => {
           age: 1990,
         },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b63',
-        //   title: 'variant',
-        //   brand: 'volkswagen',
-        //   price: '13000',
-        //   age: 1990,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b63',
+          title: 'variant',
+          brand: 'volkswagen',
+          price: '13000',
+          age: 1990,
+        },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b64',
-        //   title: 'Gol G5',
-        //   brand: 'volkswagen',
-        //   price: '27500',
-        //   age: 2013,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b54',
+          title: 'Golf',
+          brand: 'volkswagen',
+          price: '16500',
+          age: 2004,
+        },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b65',
-        //   title: 'Uno 1.0',
-        //   brand: 'FIAT',
-        //   price: '10500',
-        //   age: 2002,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b44',
+          title: 'Parati',
+          brand: 'volkswagen',
+          price: '19500',
+          age: 2010,
+        },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b66',
-        //   title: 'BWM M3',
-        //   brand: 'BMW',
-        //   price: '120000',
-        //   age: 2018,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b34',
+          title: 'Saveiro',
+          brand: 'volkswagen',
+          price: '18000',
+          age: 2004,
+        },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b67',
-        //   title: 'Audi a3',
-        //   brand: 'audi',
-        //   price: '28500',
-        //   age: 2013,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b65',
+          title: 'Uno 1.0',
+          brand: 'FIAT',
+          price: '10500',
+          age: 2002,
+        },
 
-        // {
-        //   _id: '5dba13f8a9497b001d834b68',
-        //   title: 'Jeep',
-        //   brand: 'jeep',
-        //   price: '60000',
-        //   age: 2017,
-        // },
+        {
+          _id: '5dba13f8a9497b001d834b66',
+          title: 'BWM M3',
+          brand: 'BMW',
+          price: '120000',
+          age: 2018,
+        },
+
+        {
+          _id: '5dba13f8a9497b001d834b67',
+          title: 'Audi a3',
+          brand: 'audi',
+          price: '28500',
+          age: 2013,
+        },
+
+        {
+          _id: '5dba13f8a9497b001d834b68',
+          title: 'Jeep',
+          brand: 'jeep',
+          price: '60000',
+          age: 2017,
+        },
+
+        {
+          _id: '5dba13f8a9497b001d834b69',
+          title: 'Focus',
+          brand: 'ford',
+          price: '60000',
+          age: 2019,
+        },
+
+        {
+          _id: '5dba13f8a9497b001d834b70',
+          title: 'Palio',
+          brand: 'FIAT',
+          price: '12000',
+          age: 2017,
+        },
+
+        {
+          _id: '5dba13f8a9497b001d834b71',
+          title: 'Sandero',
+          brand: 'renault',
+          price: '32000',
+          age: 2016,
+        },
       ];
 
       setCars(data);

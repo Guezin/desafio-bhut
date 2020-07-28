@@ -1,10 +1,6 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+import { usePagination } from './pagination';
 
 import { ICar } from '../components/Car';
 
@@ -17,6 +13,7 @@ const FilterContext = createContext({} as IFilterProviderProps);
 
 const FilterProvider: React.FC = ({ children }) => {
   const [carsFound, setCarsFound] = useState<ICar[]>([]);
+
   return (
     <FilterContext.Provider value={{ carsFound, setCarsFound }}>
       {children}
