@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import { useCar } from '../../hooks/car';
 import { usePagination } from '../../hooks/pagination';

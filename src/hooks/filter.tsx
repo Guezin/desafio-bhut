@@ -1,6 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-import { usePagination } from './pagination';
+import React, { createContext, useContext, useState } from 'react';
 
 import { ICar } from '../components/Car';
 

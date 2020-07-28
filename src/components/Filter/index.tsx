@@ -16,7 +16,7 @@ const Filter: React.FC = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
 
   const { cars } = useCar();
-  const { handlePagination, setCurrentPage } = usePagination();
+  const { setCurrentPage } = usePagination();
   const { setCarsFound } = useFilter();
 
   const removeDuplicates = useCallback(() => {
@@ -64,7 +64,7 @@ const Filter: React.FC = () => {
   return (
     <Container>
       <button type="button" onClick={handleSelectedFilter}>
-        {selectedFilter ? (
+        {selectedFilter || !!selectedBrand ? (
           <FaFilter size={20} color="#fff" />
         ) : (
           <FiFilter size={20} color="#fff" />
