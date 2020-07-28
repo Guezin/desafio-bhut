@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 
-import api from '../../services/api';
+import { useCar } from '../../hooks/car';
 
 import Modal, { IModalProps } from '../Modal';
 import Input from '../InputModal';
@@ -9,9 +9,15 @@ import Input from '../InputModal';
 import { Form } from './styles';
 
 const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
-  const handleSubmit = useCallback(() => {
-    setIsOpen();
-  }, [setIsOpen]);
+  const { addCar } = useCar();
+
+  const handleSubmit = useCallback(
+    data => {
+      addCar(data);
+      setIsOpen();
+    },
+    [setIsOpen, addCar]
+  );
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

@@ -11,35 +11,69 @@ import { usePagination } from './pagination';
 
 import { ICar } from '../components/Car';
 
-interface IHandleAddCarProps {
-  title: string;
-  brand: string;
-  price: string;
-  age: number;
-}
-
 interface ICarProviderProps {
   cars: ICar[];
+  addCar: (car: Omit<ICar, '_id'>) => void;
+  updateCar: (car: ICar) => void;
+  deleteCar: () => void;
+  carToBeDeleted: string;
+  setCarToBeDeleted: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CarContext = createContext({} as ICarProviderProps);
 
 const CarProvider: React.FC = ({ children }) => {
   const [cars, setCars] = useState<ICar[]>([]);
+  const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
   const { handlePagination } = usePagination();
 
-  const handleAddCar = useCallback(
-    async ({ title, brand, price, age }: IHandleAddCarProps) => {
-      await api.post('/cars', {
+  const addCar = useCallback(
+    async ({ title, brand, price, age }: Omit<ICar, '_id'>) => {
+      const { data } = await api.post<ICar>('/cars', {
         title,
         brand,
         price,
         age,
       });
+
+      // const data = { _id: '99', title, brand, price, age };
+
+      setCars(oldState => [...oldState, data]);
+      handlePagination([...cars, data]);
     },
-    []
+    [cars, handlePagination]
   );
+
+  const updateCar = useCallback(
+    async ({ _id, title, brand, price, age }: ICar) => {
+      const copyCars = cars;
+      const indexOfCar = cars.findIndex(findCar => findCar._id === _id);
+      const car = cars.find(findCar => findCar._id === _id);
+
+      copyCars[indexOfCar] = Object.assign(car, { title, brand, price, age });
+
+      // await api.put(`/cars/${_id}`, {
+      //   title,
+      //   brand,
+      //   price,
+      //   age,
+      // });
+
+      setCars(copyCars);
+      handlePagination(copyCars);
+    },
+    [cars, handlePagination]
+  );
+
+  const deleteCar = useCallback(async () => {
+    // await api.delete(`/cars/${carToBeDeleted}`);
+
+    const updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
+
+    setCars(updatedCarList);
+    handlePagination(updatedCarList);
+  }, [cars, carToBeDeleted, handlePagination]);
 
   useEffect(() => {
     const loadTheCars = async () => {
@@ -110,7 +144,20 @@ const CarProvider: React.FC = ({ children }) => {
     loadTheCars();
   }, [handlePagination]);
 
-  return <CarContext.Provider value={{ cars }}>{children}</CarContext.Provider>;
+  return (
+    <CarContext.Provider
+      value={{
+        cars,
+        addCar,
+        updateCar,
+        deleteCar,
+        carToBeDeleted,
+        setCarToBeDeleted,
+      }}
+    >
+      {children}
+    </CarContext.Provider>
+  );
 };
 
 const useCar = (): ICarProviderProps => {

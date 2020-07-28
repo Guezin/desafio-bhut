@@ -20,7 +20,7 @@ import {
 } from './styles';
 
 const Home: React.FC = () => {
-  const { cars } = useCar();
+  const { setCarToBeDeleted } = useCar();
   const { carsFound } = useFilter();
   const {
     handlePagination,
@@ -31,17 +31,9 @@ const Home: React.FC = () => {
   } = usePagination();
 
   const [editingCar, setEditingCar] = useState<ICar>({} as ICar);
-  const [carToBeDeleted, setCarToBeDeleted] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-
-  const handleChangePage = useCallback(
-    page => {
-      setCurrentPage(page);
-    },
-    [setCurrentPage]
-  );
 
   const toggleModalAddCar = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -68,7 +60,7 @@ const Home: React.FC = () => {
       setCarToBeDeleted(_id);
       toggleModalDeleteCar();
     },
-    [toggleModalDeleteCar]
+    [toggleModalDeleteCar, setCarToBeDeleted]
   );
 
   const handleCarsFound = useMemo(() => {
@@ -103,7 +95,6 @@ const Home: React.FC = () => {
       <ModalDeleteCar
         isOpen={deleteModalOpen}
         setIsOpen={toggleModalDeleteCar}
-        carToBeDeleted={carToBeDeleted}
       />
       <ModalEditCar
         isOpen={editModalOpen}
@@ -135,7 +126,7 @@ const Home: React.FC = () => {
             key={button.id}
             type="button"
             selected={button.id === currentPage}
-            onClick={() => handleChangePage(button.id)}
+            onClick={() => setCurrentPage(button.id)}
           >
             {button.value}
           </Button>
