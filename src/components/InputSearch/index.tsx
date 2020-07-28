@@ -7,29 +7,41 @@ import { usePagination } from '../../hooks/pagination';
 
 import { Container } from './styles';
 
+import { ICar } from '../Car';
+
 type InputProps = InputHTMLAttributes<HTMLInputElement>;
 
 const InputSearch: React.FC<InputProps> = ({ ...rest }) => {
-  const { setCarsFound } = useFilter();
   const { cars } = useCar();
   const { handlePagination } = usePagination();
 
   const handleSearchValue = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const result = cars.filter(car => car.title === event.target.value);
+      const listOfCarsFound: ICar[] = [];
+      const searchValue = event.target.value;
+      const firstLetterConvertedToUppercase = searchValue
+        .substring(0, 1)
+        .toUpperCase()
+        .concat(searchValue.substring(1));
 
-      if (result.length > 0) {
-        setCarsFound(result);
+      cars.forEach(car => {
+        if (car.title === searchValue) {
+          listOfCarsFound.push(car);
+        } else if (car.title === firstLetterConvertedToUppercase) {
+          listOfCarsFound.push(car);
+        }
+      });
+
+      if (listOfCarsFound.length) {
+        handlePagination(listOfCarsFound);
         return;
       }
 
-      if (!result.length) {
+      if (!listOfCarsFound.length) {
         handlePagination(cars);
       }
-
-      setCarsFound([]);
     },
-    [cars, handlePagination, setCarsFound]
+    [cars, handlePagination]
   );
 
   return (
