@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import api from '../services/api';
+import { useFilter } from './filter';
 import { usePagination } from './pagination';
 
 import { ICar } from '../components/Car';
@@ -26,7 +27,8 @@ const CarProvider: React.FC = ({ children }) => {
   const [cars, setCars] = useState<ICar[]>([]);
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
-  const { handlePagination } = usePagination();
+  const { handlePagination, currentPage, setCurrentPage } = usePagination();
+  const { carsFound, setCarsFound } = useFilter();
 
   const addCar = useCallback(
     async ({ title, brand, price, age }: Omit<ICar, '_id'>) => {
@@ -53,27 +55,44 @@ const CarProvider: React.FC = ({ children }) => {
 
       copyCars[indexOfCar] = Object.assign(car, { title, brand, price, age });
 
-      // await api.put(`/cars/${_id}`, {
-      //   title,
-      //   brand,
-      //   price,
-      //   age,
-      // });
+      await api.put(`/cars/${_id}`, {
+        title,
+        brand,
+        price,
+        age,
+      });
 
       setCars(copyCars);
+
       handlePagination(copyCars);
     },
     [cars, handlePagination]
   );
-
+  console.log(carsFound);
   const deleteCar = useCallback(async () => {
     // await api.delete(`/cars/${carToBeDeleted}`);
 
-    const updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
+    let updatedCarList: ICar[] = [];
+
+    if (carsFound.length > 0) {
+      const updatedCarListFound = carsFound.filter(
+        car => car._id !== carToBeDeleted
+      );
+
+      updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
+
+      setCarsFound(updatedCarListFound);
+      setCars(updatedCarList);
+      handlePagination(updatedCarListFound);
+
+      return;
+    }
+
+    updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
 
     setCars(updatedCarList);
     handlePagination(updatedCarList);
-  }, [cars, carToBeDeleted, handlePagination]);
+  }, [cars, carToBeDeleted, carsFound, setCarsFound, handlePagination]);
 
   useEffect(() => {
     const loadTheCars = async () => {

@@ -1,6 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 import { useCar } from '../../hooks/car';
+import { useFilter } from '../../hooks/filter';
 import { usePagination } from '../../hooks/pagination';
 
 import Car, { ICar } from '../../components/Car';
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { setCarToBeDeleted } = useCar();
+  const { carsFound } = useFilter();
   const {
     currentPage,
     setCurrentPage,
@@ -60,6 +62,17 @@ const Home: React.FC = () => {
     [toggleModalDeleteCar, setCarToBeDeleted]
   );
 
+  const carsToBeDisplayed = useMemo(() => {
+    return numberOfCarsToBeDisplayed.map(car => (
+      <Car
+        key={car._id}
+        car={car}
+        handleDeleteCar={handleDeleteCar}
+        handleEditCar={handleEditCar}
+      />
+    ));
+  }, [handleEditCar, handleDeleteCar, numberOfCarsToBeDisplayed]);
+
   return (
     <Container>
       <ModalAddCar isOpen={modalOpen} setIsOpen={toggleModalAddCar} />
@@ -89,26 +102,20 @@ const Home: React.FC = () => {
         </ContentSearch>
       </section>
 
-      {numberOfCarsToBeDisplayed.map(car => (
-        <Car
-          key={car._id}
-          car={car}
-          handleDeleteCar={handleDeleteCar}
-          handleEditCar={handleEditCar}
-        />
-      ))}
+      {carsToBeDisplayed}
 
       <ContainerPagingButtons>
-        {pagingButtons.map(button => (
-          <Button
-            key={button.id}
-            type="button"
-            selected={button.id === currentPage}
-            onClick={() => setCurrentPage(button.id)}
-          >
-            {button.value}
-          </Button>
-        ))}
+        {pagingButtons.length > 1 &&
+          pagingButtons.map(button => (
+            <Button
+              key={button.id}
+              type="button"
+              selected={button.id === currentPage}
+              onClick={() => setCurrentPage(button.id)}
+            >
+              {button.value}
+            </Button>
+          ))}
       </ContainerPagingButtons>
     </Container>
   );

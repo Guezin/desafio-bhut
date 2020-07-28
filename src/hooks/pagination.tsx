@@ -49,6 +49,27 @@ const PaginationProvider: React.FC = ({ children }) => {
 
       let carsToBeDisplayed: ICar[] = [];
 
+      if (carsFound.length === limit) {
+        setCurrentPage(1);
+      }
+
+      if (carsFound.length >= limit) {
+        carsToBeDisplayed = carsFound.slice(startPage, endPage);
+
+        setPagingButtons(handlePagingButtons(carsFound.length));
+        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
+
+        return;
+      }
+
+      if (carsFound.length) {
+        carsToBeDisplayed = carsFound;
+
+        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
+
+        return;
+      }
+
       if (cars.length > limit) {
         const result = cars.slice(startPage, endPage);
 
@@ -57,26 +78,6 @@ const PaginationProvider: React.FC = ({ children }) => {
 
       if (cars.length < limit) {
         carsToBeDisplayed = cars;
-      }
-
-      if (carsFound.length > limit) {
-        const result = carsFound.slice(startPage, endPage);
-
-        carsToBeDisplayed = result;
-
-        setPagingButtons(handlePagingButtons(carsFound.length));
-        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
-
-        return;
-      }
-
-      if (carsFound.length > 0 && carsFound.length < limit) {
-        carsToBeDisplayed = carsFound;
-
-        setPagingButtons([]);
-        setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
-
-        return;
       }
 
       setPagingButtons(handlePagingButtons(cars.length));

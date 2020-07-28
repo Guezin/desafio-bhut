@@ -20,7 +20,7 @@ interface IModalProps {
 const ModalDeleteCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   const { deleteCar } = useCar();
 
-  const handleDeleteCar = useCallback(async () => {
+  const handleDeleteCar = useCallback(() => {
     deleteCar();
 
     setIsOpen();
