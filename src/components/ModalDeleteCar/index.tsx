@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { FiTrash2, FiXSquare } from 'react-icons/fi';
 
+import api from '../../services/api';
+
 import Modal from '../Modal';
 
 import {
@@ -21,8 +23,8 @@ const ModalDeleteCar: React.FC<IModalProps> = ({
   setIsOpen,
   carToBeDeleted,
 }) => {
-  const handleDeleteCar = useCallback(() => {
-    console.log(carToBeDeleted);
+  const handleDeleteCar = useCallback(async () => {
+    await api.delete(`/cars/${carToBeDeleted}`);
 
     setIsOpen();
   }, [carToBeDeleted, setIsOpen]);

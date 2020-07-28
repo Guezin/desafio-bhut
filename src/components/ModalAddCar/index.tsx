@@ -8,27 +8,10 @@ import Input from '../InputModal';
 
 import { Form } from './styles';
 
-interface IFormSubmitData {
-  title: string;
-  brand: string;
-  price: string;
-  age: number;
-}
-
 const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
-  const handleSubmit = useCallback(
-    async ({ title, brand, price, age }: IFormSubmitData) => {
-      await api.post('/cars', {
-        title,
-        brand,
-        price,
-        age,
-      });
-
-      setIsOpen();
-    },
-    [setIsOpen]
-  );
+  const handleSubmit = useCallback(() => {
+    setIsOpen();
+  }, [setIsOpen]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

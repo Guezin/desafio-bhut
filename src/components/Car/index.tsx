@@ -6,7 +6,7 @@ import formatValue from '../../utils/formatValue';
 import { Container, Content, EditButton, DeleteButton } from './styles';
 
 export interface ICar {
-  id: string;
+  _id: string;
   title: string;
   brand: string;
   price: string;
@@ -16,7 +16,7 @@ export interface ICar {
 interface IProps {
   car: ICar;
   handleEditCar: (car: ICar) => void;
-  handleDeleteCar: (id: string) => void;
+  handleDeleteCar: (_id: string) => void;
 }
 
 const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
@@ -25,8 +25,8 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
   }, [handleEditCar, car]);
 
   const setDeleteCar = useCallback(() => {
-    handleDeleteCar(car.id);
-  }, [handleDeleteCar, car.id]);
+    handleDeleteCar(car._id);
+  }, [handleDeleteCar, car._id]);
 
   const formattedPrice = useMemo(() => {
     return formatValue(Number(car.price));

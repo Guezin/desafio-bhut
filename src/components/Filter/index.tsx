@@ -2,19 +2,20 @@ import React, { useCallback, useState } from 'react';
 import { FiFilter, FiX } from 'react-icons/fi';
 import { FaFilter } from 'react-icons/fa';
 
+import { useCar } from '../../hooks/car';
+import { usePagination } from '../../hooks/pagination';
+
 import { ICar } from '../Car';
 
 import { Container, Content, Brand } from './styles';
 
-interface IFilterProps {
-  cars: ICar[];
-  pagination: (cars: ICar[]) => void;
-}
-
-const Filter: React.FC<IFilterProps> = ({ cars, pagination }) => {
+const Filter: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState(false);
   const [brands, setBrands] = useState<string[]>([]);
   const [selectedBrand, setSelectedBrand] = useState('');
+
+  const { cars } = useCar();
+  const { handlePagination } = usePagination();
 
   const removeDuplicates = useCallback(() => {
     const carBrands: string[] = [];
@@ -47,15 +48,15 @@ const Filter: React.FC<IFilterProps> = ({ cars, pagination }) => {
         }
       });
 
-      pagination(carsFound);
+      handlePagination(carsFound);
     },
-    [cars, pagination]
+    [cars, handlePagination]
   );
 
   const handleRemoveFilter = useCallback(() => {
     setSelectedBrand('');
-    pagination(cars);
-  }, [cars, pagination]);
+    handlePagination(cars);
+  }, [cars, handlePagination]);
 
   return (
     <Container>
@@ -80,7 +81,6 @@ const Filter: React.FC<IFilterProps> = ({ cars, pagination }) => {
                   type="radio"
                   name="radio"
                   value={brand}
-                  id={brand}
                   onChange={handleBrandSearch}
                 />
                 {brand}
