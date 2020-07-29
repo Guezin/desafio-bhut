@@ -28,7 +28,13 @@ const CarProvider: React.FC = ({ children }) => {
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
   const { handlePagination, setCurrentPage } = usePagination();
-  const { carsFound, setCarsFound, setSelectedBrand } = useFilter();
+  const {
+    carsFound,
+    setCarsFound,
+    setSelectedBrand,
+    selectedFilter,
+    setSelectedFilter,
+  } = useFilter();
 
   const addCar = useCallback(
     async ({ title, brand, price, age }: Omit<ICar, '_id'>) => {
@@ -41,7 +47,7 @@ const CarProvider: React.FC = ({ children }) => {
 
       const data = { _id: '99', title, brand, price, age };
 
-      if (carsFound.length) {
+      if (selectedFilter && carsFound.length) {
         setCars(oldState => [...oldState, data]);
         setCarsFound(oldState => [...oldState, data]);
         handlePagination([...carsFound, data]);
@@ -52,7 +58,7 @@ const CarProvider: React.FC = ({ children }) => {
       setCars(oldState => [...oldState, data]);
       handlePagination([...cars, data]);
     },
-    [cars, handlePagination, setCarsFound, carsFound]
+    [cars, handlePagination, setCarsFound, carsFound, selectedFilter]
   );
 
   const updateCar = useCallback(
@@ -75,9 +81,10 @@ const CarProvider: React.FC = ({ children }) => {
         age,
       });
 
-      if (carsFound.length) {
+      if (selectedFilter && carsFound.length) {
         const updatedCarListFound = carsFound;
         const indexOfCarFound = carsFound.findIndex(car => car._id === _id);
+
         updatedCarListFound[indexOfCarFound] = Object.assign(data1, {
           title,
           brand,
@@ -96,7 +103,7 @@ const CarProvider: React.FC = ({ children }) => {
 
       handlePagination(updatedCarList);
     },
-    [cars, handlePagination, carsFound, setCarsFound]
+    [cars, handlePagination, carsFound, setCarsFound, selectedFilter]
   );
 
   const deleteCar = useCallback(async () => {
@@ -104,7 +111,7 @@ const CarProvider: React.FC = ({ children }) => {
 
     // await api.delete(`/cars/${carToBeDeleted}`);
 
-    if (carsFound.length) {
+    if (selectedFilter && carsFound.length) {
       const updatedCarListFound = carsFound.filter(
         car => car._id !== carToBeDeleted
       );
@@ -114,6 +121,7 @@ const CarProvider: React.FC = ({ children }) => {
       if (carsFound.length === 1) {
         setCurrentPage(1);
         setSelectedBrand('');
+        setSelectedFilter(false);
       }
 
       setCarsFound(updatedCarListFound);
@@ -135,6 +143,8 @@ const CarProvider: React.FC = ({ children }) => {
     handlePagination,
     setCurrentPage,
     setSelectedBrand,
+    selectedFilter,
+    setSelectedFilter,
   ]);
 
   useEffect(() => {

@@ -20,7 +20,7 @@ const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
 
       await addCar(data);
 
-      setLoading(true);
+      setLoading(false);
 
       setIsOpen();
     },
