@@ -9,6 +9,7 @@ import React, {
 import api from '../services/api';
 import { useFilter } from './filter';
 import { usePagination } from './pagination';
+import { useToast } from './toast';
 
 import { ICar } from '../components/Car';
 
@@ -28,6 +29,7 @@ const CarProvider: React.FC = ({ children }) => {
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
   const { handlePagination, setCurrentPage } = usePagination();
+  const { addToast } = useToast();
   const {
     carsFound,
     setCarsFound,
@@ -45,6 +47,12 @@ const CarProvider: React.FC = ({ children }) => {
       //   age,
       // });
 
+      addToast({
+        type: 'success',
+        title: 'Tudo OK...',
+        description: `Veículo ${title}, adicionado com sucesso!`,
+      });
+
       const data = { _id: '99', title, brand, price, age };
 
       if (selectedFilter && carsFound.length) {
@@ -58,7 +66,7 @@ const CarProvider: React.FC = ({ children }) => {
       setCars(oldState => [...oldState, data]);
       handlePagination([...cars, data]);
     },
-    [cars, handlePagination, setCarsFound, carsFound, selectedFilter]
+    [cars, handlePagination, setCarsFound, carsFound, selectedFilter, addToast]
   );
 
   const updateCar = useCallback(
@@ -92,6 +100,12 @@ const CarProvider: React.FC = ({ children }) => {
           age,
         });
 
+        addToast({
+          type: 'success',
+          title: 'Atualizado',
+          description: `Dados atualizados com sucesso!`,
+        });
+
         setCarsFound(updatedCarListFound);
         setCars(updatedCarList);
         handlePagination(updatedCarListFound);
@@ -99,11 +113,17 @@ const CarProvider: React.FC = ({ children }) => {
         return;
       }
 
+      addToast({
+        type: 'success',
+        title: 'Atualizado',
+        description: `Dados atualizados com sucesso!`,
+      });
+
       setCars(updatedCarList);
 
       handlePagination(updatedCarList);
     },
-    [cars, handlePagination, carsFound, setCarsFound, selectedFilter]
+    [cars, handlePagination, carsFound, setCarsFound, selectedFilter, addToast]
   );
 
   const deleteCar = useCallback(async () => {
@@ -124,6 +144,12 @@ const CarProvider: React.FC = ({ children }) => {
         setSelectedFilter(false);
       }
 
+      addToast({
+        type: 'success',
+        title: 'Removido',
+        description: 'Veículo foi removido.',
+      });
+
       setCarsFound(updatedCarListFound);
       setCars(updatedCarList);
       handlePagination(updatedCarListFound);
@@ -132,6 +158,12 @@ const CarProvider: React.FC = ({ children }) => {
     }
 
     updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
+
+    addToast({
+      type: 'success',
+      title: 'Excluido',
+      description: 'Veículo foi removido com sucesso.',
+    });
 
     setCars(updatedCarList);
     handlePagination(updatedCarList);
@@ -145,6 +177,7 @@ const CarProvider: React.FC = ({ children }) => {
     setSelectedBrand,
     selectedFilter,
     setSelectedFilter,
+    addToast,
   ]);
 
   useEffect(() => {

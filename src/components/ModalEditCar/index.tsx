@@ -39,10 +39,7 @@ const ModalEditCar: React.FC<IModalProps> = ({
     async ({ title, brand, price, age }: IFormSubmitData) => {
       setLoading(true);
 
-      const formattedPrice = price
-        .split(/[!@#$%+*-.,\s]+/g)
-        .join('')
-        .trim();
+      const formattedPrice = price.split(/[!@#$%+*-.,\s]+/g).join('');
 
       await updateCar({
         _id: editingCar._id,

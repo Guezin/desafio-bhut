@@ -9,16 +9,30 @@ import Input from '../InputModal';
 
 import { Form, beatLoaderStyles } from './styles';
 
+interface IFormSubmitData {
+  title: string;
+  brand: string;
+  price: string;
+  age: number;
+}
+
 const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   const [loading, setLoading] = useState(false);
 
   const { addCar } = useCar();
 
   const handleSubmit = useCallback(
-    async data => {
+    async ({ title, brand, price, age }: IFormSubmitData) => {
       setLoading(true);
 
-      await addCar(data);
+      const formattedPrice = price.split(/[!@#$%+*-.,\s]+/g).join('');
+
+      await addCar({
+        title,
+        brand,
+        price: formattedPrice,
+        age,
+      });
 
       setLoading(false);
 
