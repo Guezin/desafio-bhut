@@ -28,7 +28,7 @@ const CarProvider: React.FC = ({ children }) => {
   const [cars, setCars] = useState<ICar[]>([]);
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
-  const { handlePagination, setCurrentPage } = usePagination();
+  const { handlePagination, currentPage, setCurrentPage } = usePagination();
   const { addToast } = useToast();
   const {
     carsFound,
@@ -118,10 +118,19 @@ const CarProvider: React.FC = ({ children }) => {
       });
 
       setCars(updatedCarList);
-
+      setCurrentPage(currentPage);
       handlePagination(updatedCarList);
     },
-    [cars, handlePagination, carsFound, setCarsFound, selectedFilter, addToast]
+    [
+      cars,
+      handlePagination,
+      carsFound,
+      setCarsFound,
+      selectedFilter,
+      addToast,
+      currentPage,
+      setCurrentPage,
+    ]
   );
 
   const deleteCar = useCallback(async () => {
