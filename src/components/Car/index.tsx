@@ -43,7 +43,7 @@ const Car: React.FC<IProps> = ({ car, handleDeleteCar, handleEditCar }) => {
           <p>{car.brand}</p>
           <p>
             ano:
-            {car.age}
+            <span>{car.age}</span>
           </p>
           <p>{formattedPrice}</p>
         </section>

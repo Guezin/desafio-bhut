@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { FiFilter, FiX } from 'react-icons/fi';
 import { FaFilter } from 'react-icons/fa';
 
@@ -11,12 +11,16 @@ import { ICar } from '../Car';
 import { Container, Content, Brand } from './styles';
 
 const Filter: React.FC = () => {
-  const [selectedFilter, setSelectedFilter] = useState(false);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [selectedBrand, setSelectedBrand] = useState('');
-
   const { cars } = useCar();
-  const { setCarsFound } = useFilter();
+  const {
+    setCarsFound,
+    brands,
+    setBrands,
+    selectedFilter,
+    setSelectedFilter,
+    selectedBrand,
+    setSelectedBrand,
+  } = useFilter();
   const { setCurrentPage } = usePagination();
 
   const removeDuplicates = useCallback(() => {
@@ -29,13 +33,13 @@ const Filter: React.FC = () => {
     });
 
     setBrands(carBrands);
-  }, [cars]);
+  }, [cars, setBrands]);
 
   const handleSelectedFilter = useCallback(() => {
     setSelectedFilter(!selectedFilter);
 
     removeDuplicates();
-  }, [selectedFilter, removeDuplicates]);
+  }, [selectedFilter, removeDuplicates, setSelectedFilter]);
 
   const handleBrandSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,14 +56,14 @@ const Filter: React.FC = () => {
 
       setCarsFound(carsFound);
     },
-    [cars, setCarsFound]
+    [cars, setCarsFound, setSelectedBrand]
   );
 
   const handleRemoveFilter = useCallback(() => {
     setSelectedBrand('');
     setCurrentPage(1);
     setCarsFound([]);
-  }, [setCarsFound, setCurrentPage]);
+  }, [setCarsFound, setCurrentPage, setSelectedBrand]);
 
   return (
     <Container>

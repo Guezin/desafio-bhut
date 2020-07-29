@@ -27,8 +27,8 @@ const CarProvider: React.FC = ({ children }) => {
   const [cars, setCars] = useState<ICar[]>([]);
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
-  const { handlePagination } = usePagination();
-  const { carsFound, setCarsFound } = useFilter();
+  const { handlePagination, setCurrentPage } = usePagination();
+  const { carsFound, setCarsFound, setSelectedBrand } = useFilter();
 
   const addCar = useCallback(
     async ({ title, brand, price, age }: Omit<ICar, '_id'>) => {
@@ -102,14 +102,19 @@ const CarProvider: React.FC = ({ children }) => {
   const deleteCar = useCallback(async () => {
     let updatedCarList: ICar[] = [];
 
-    if (carsFound.length > 0) {
+    // await api.delete(`/cars/${carToBeDeleted}`);
+
+    if (carsFound.length) {
       const updatedCarListFound = carsFound.filter(
         car => car._id !== carToBeDeleted
       );
 
       updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
 
-      // await api.delete(`/cars/${carToBeDeleted}`);
+      if (carsFound.length === 1) {
+        setCurrentPage(1);
+        setSelectedBrand('');
+      }
 
       setCarsFound(updatedCarListFound);
       setCars(updatedCarList);
@@ -122,7 +127,15 @@ const CarProvider: React.FC = ({ children }) => {
 
     setCars(updatedCarList);
     handlePagination(updatedCarList);
-  }, [cars, carToBeDeleted, carsFound, setCarsFound, handlePagination]);
+  }, [
+    cars,
+    carToBeDeleted,
+    carsFound,
+    setCarsFound,
+    handlePagination,
+    setCurrentPage,
+    setSelectedBrand,
+  ]);
 
   useEffect(() => {
     const loadTheCars = async () => {

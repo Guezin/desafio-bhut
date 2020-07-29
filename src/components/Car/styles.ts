@@ -29,6 +29,9 @@ export const Content = styled.div`
 
     P {
       font-size: 18px;
+      span {
+        margin-left: 4px;
+      }
     }
 
     p + p {
