@@ -15,7 +15,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>;
 const InputSearch: React.FC<InputProps> = ({ ...rest }) => {
   const { cars } = useCar();
   const { handlePagination } = usePagination();
-  const { carsFound } = useFilter();
+  const { carWasFound, setCarWasFound } = useFilter();
   const { addToast } = useToast();
 
   const handleSearchValue = useCallback(
@@ -36,31 +36,33 @@ const InputSearch: React.FC<InputProps> = ({ ...rest }) => {
       });
 
       if (listOfCarsFound.length) {
+        setCarWasFound(true);
         handlePagination(listOfCarsFound);
         return;
       }
 
       if (!listOfCarsFound.length) {
         handlePagination(cars);
+        setCarWasFound(false);
       }
     },
-    [cars, handlePagination]
+    [cars, handlePagination, setCarWasFound]
   );
 
   const handlePressEnterButton = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === 'Enter') {
-        if (!carsFound.length) {
+        if (!carWasFound) {
           addToast({
             type: 'error',
             title: 'Nenhum registro',
             description:
-              'Nunhum veículo foi encontrado, verifique se nome está correto!',
+              'Nunhum veículo foi encontrado, verifique se o nome está correto!',
           });
         }
       }
     },
-    [addToast, carsFound]
+    [addToast, carWasFound]
   );
 
   return (

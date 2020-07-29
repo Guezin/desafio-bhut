@@ -71,6 +71,19 @@ const Home: React.FC = () => {
     ));
   }, [handleEditCar, handleDeleteCar, numberOfCarsToBeDisplayed]);
 
+  const pagingButtonsToBeDisplayed = useMemo(() => {
+    return pagingButtons.map(button => (
+      <Button
+        key={button.id}
+        type="button"
+        selected={button.id === currentPage}
+        onClick={() => setCurrentPage(button.id)}
+      >
+        {button.value}
+      </Button>
+    ));
+  }, [currentPage, pagingButtons, setCurrentPage]);
+
   return (
     <Container>
       <ModalAddCar isOpen={modalOpen} setIsOpen={toggleModalAddCar} />
@@ -103,17 +116,7 @@ const Home: React.FC = () => {
       {carsToBeDisplayed}
 
       <ContainerPagingButtons>
-        {pagingButtons.length > 1 &&
-          pagingButtons.map(button => (
-            <Button
-              key={button.id}
-              type="button"
-              selected={button.id === currentPage}
-              onClick={() => setCurrentPage(button.id)}
-            >
-              {button.value}
-            </Button>
-          ))}
+        {pagingButtons.length > 1 && pagingButtonsToBeDisplayed}
       </ContainerPagingButtons>
     </Container>
   );

@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 
 interface IContenrProps {
-  selectedFilter: boolean;
+  activated: boolean;
 }
 
 interface IBrandProps {
@@ -31,7 +31,7 @@ export const Content = styled.div<IContenrProps>`
   background-color: #f0f0f5;
 
   ${props =>
-    props.selectedFilter
+    props.activated
       ? css`
           display: flex;
         `

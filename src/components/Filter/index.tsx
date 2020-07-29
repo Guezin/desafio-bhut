@@ -16,10 +16,11 @@ const Filter: React.FC = () => {
     setCarsFound,
     brands,
     setBrands,
-    selectedFilter,
-    setSelectedFilter,
     selectedBrand,
     setSelectedBrand,
+    setSelectedFilter,
+    filterActivated,
+    setFilterActivated,
   } = useFilter();
   const { setCurrentPage } = usePagination();
 
@@ -36,10 +37,10 @@ const Filter: React.FC = () => {
   }, [cars, setBrands]);
 
   const handleSelectedFilter = useCallback(() => {
-    setSelectedFilter(!selectedFilter);
+    setFilterActivated(!filterActivated);
 
     removeDuplicates();
-  }, [selectedFilter, removeDuplicates, setSelectedFilter]);
+  }, [filterActivated, setFilterActivated, removeDuplicates]);
 
   const handleBrandSearch = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,9 +55,10 @@ const Filter: React.FC = () => {
         }
       });
 
+      setSelectedFilter(true);
       setCarsFound(carsFound);
     },
-    [cars, setCarsFound, setSelectedBrand]
+    [cars, setCarsFound, setSelectedBrand, setSelectedFilter]
   );
 
   const handleRemoveFilter = useCallback(() => {
@@ -68,14 +70,14 @@ const Filter: React.FC = () => {
   return (
     <Container>
       <button type="button" onClick={handleSelectedFilter}>
-        {selectedFilter || !!selectedBrand ? (
+        {filterActivated || !!selectedBrand ? (
           <FaFilter size={20} color="#fff" />
         ) : (
           <FiFilter size={20} color="#fff" />
         )}
       </button>
 
-      <Content selectedFilter={selectedFilter}>
+      <Content activated={filterActivated}>
         {brands &&
           brands.map(brand => (
             <Brand key={brand} selected={brand === selectedBrand}>

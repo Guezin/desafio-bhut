@@ -11,12 +11,18 @@ interface IFilterProviderProps {
   setBrands: React.Dispatch<React.SetStateAction<string[]>>;
   selectedBrand: string;
   setSelectedBrand: React.Dispatch<React.SetStateAction<string>>;
+  carWasFound: boolean;
+  setCarWasFound: React.Dispatch<React.SetStateAction<boolean>>;
+  filterActivated: boolean;
+  setFilterActivated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const FilterContext = createContext({} as IFilterProviderProps);
 
 const FilterProvider: React.FC = ({ children }) => {
+  const [filterActivated, setFilterActivated] = useState(false);
   const [carsFound, setCarsFound] = useState<ICar[]>([]);
+  const [carWasFound, setCarWasFound] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(false);
   const [brands, setBrands] = useState<string[]>([]);
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -32,6 +38,10 @@ const FilterProvider: React.FC = ({ children }) => {
         setSelectedFilter,
         selectedBrand,
         setSelectedBrand,
+        carWasFound,
+        setCarWasFound,
+        filterActivated,
+        setFilterActivated,
       }}
     >
       {children}
