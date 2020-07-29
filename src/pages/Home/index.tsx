@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
 import { useCar } from '../../hooks/car';
-import { useFilter } from '../../hooks/filter';
 import { usePagination } from '../../hooks/pagination';
 
 import Car, { ICar } from '../../components/Car';
@@ -26,7 +25,6 @@ const Home: React.FC = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { setCarToBeDeleted } = useCar();
-  const { carsFound } = useFilter();
   const {
     currentPage,
     setCurrentPage,

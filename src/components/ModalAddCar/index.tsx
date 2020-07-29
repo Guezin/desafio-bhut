@@ -1,19 +1,27 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
+import { BeatLoader } from 'react-spinners';
 
 import { useCar } from '../../hooks/car';
 
 import Modal, { IModalProps } from '../Modal';
 import Input from '../InputModal';
 
-import { Form } from './styles';
+import { Form, beatLoaderStyles } from './styles';
 
 const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+  const [loading, setLoading] = useState(false);
+
   const { addCar } = useCar();
 
   const handleSubmit = useCallback(
-    data => {
-      addCar(data);
+    async data => {
+      setLoading(true);
+
+      await addCar(data);
+
+      setLoading(true);
+
       setIsOpen();
     },
     [setIsOpen, addCar]
@@ -32,9 +40,18 @@ const ModalAddCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         <button type="submit">
           <p>Adicionar</p>
 
-          <div>
-            <FiCheckSquare size={24} color="#fff" />
-          </div>
+          <span>
+            {loading ? (
+              <BeatLoader
+                loading={loading}
+                size={5}
+                color="#fff"
+                css={beatLoaderStyles}
+              />
+            ) : (
+              <FiCheckSquare size={24} color="#fff" />
+            )}
+          </span>
         </button>
       </Form>
     </Modal>

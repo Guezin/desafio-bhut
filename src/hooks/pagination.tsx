@@ -65,6 +65,7 @@ const PaginationProvider: React.FC = ({ children }) => {
       if (carsFound.length) {
         carsToBeDisplayed = carsFound;
 
+        setPagingButtons([]);
         setNumberOfCarsToBeDisplayed(carsToBeDisplayed);
 
         return;

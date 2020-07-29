@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FiTrash2, FiXSquare } from 'react-icons/fi';
+import { BeatLoader } from 'react-spinners';
 
 import { useCar } from '../../hooks/car';
 
@@ -10,6 +11,7 @@ import {
   ContainerButtons,
   DeleteButton,
   CancelButton,
+  beatLoaderStyles,
 } from './styles';
 
 interface IModalProps {
@@ -18,13 +20,23 @@ interface IModalProps {
 }
 
 const ModalDeleteCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+  const [loading, setLoading] = useState(false);
+
   const { deleteCar } = useCar();
 
-  const handleDeleteCar = useCallback(() => {
-    deleteCar();
+  const handleDeleteCar = useCallback(async () => {
+    setLoading(true);
+
+    await deleteCar();
+
+    setLoading(false);
 
     setIsOpen();
   }, [setIsOpen, deleteCar]);
+
+  const handleCancelModal = useCallback(() => {
+    setIsOpen();
+  }, [setIsOpen]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -32,20 +44,29 @@ const ModalDeleteCar: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         <h1>Realmente deseja excluir?</h1>
 
         <ContainerButtons>
-          <CancelButton type="button">
+          <CancelButton type="button" onClick={handleCancelModal}>
             <p>Cancelar</p>
 
-            <div>
+            <span>
               <FiXSquare size={24} color="#fff" />
-            </div>
+            </span>
           </CancelButton>
 
           <DeleteButton type="button" onClick={handleDeleteCar}>
             <p>Excluir</p>
 
-            <div>
-              <FiTrash2 size={24} color="#fff" />
-            </div>
+            <span>
+              {loading ? (
+                <BeatLoader
+                  loading={loading}
+                  size={5}
+                  color="#fff"
+                  css={beatLoaderStyles}
+                />
+              ) : (
+                <FiTrash2 size={24} color="#fff" />
+              )}
+            </span>
           </DeleteButton>
         </ContainerButtons>
       </Content>

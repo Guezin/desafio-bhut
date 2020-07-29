@@ -3,8 +3,8 @@ import { FiFilter, FiX } from 'react-icons/fi';
 import { FaFilter } from 'react-icons/fa';
 
 import { useCar } from '../../hooks/car';
-import { usePagination } from '../../hooks/pagination';
 import { useFilter } from '../../hooks/filter';
+import { usePagination } from '../../hooks/pagination';
 
 import { ICar } from '../Car';
 
@@ -16,8 +16,8 @@ const Filter: React.FC = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
 
   const { cars } = useCar();
-  const { setCurrentPage } = usePagination();
   const { setCarsFound } = useFilter();
+  const { setCurrentPage } = usePagination();
 
   const removeDuplicates = useCallback(() => {
     const carBrands: string[] = [];
@@ -51,15 +51,15 @@ const Filter: React.FC = () => {
       });
 
       setCarsFound(carsFound);
-      setCurrentPage(1);
     },
-    [cars, setCurrentPage, setCarsFound]
+    [cars, setCarsFound]
   );
 
   const handleRemoveFilter = useCallback(() => {
     setSelectedBrand('');
+    setCurrentPage(1);
     setCarsFound([]);
-  }, [setCarsFound]);
+  }, [setCarsFound, setCurrentPage]);
 
   return (
     <Container>

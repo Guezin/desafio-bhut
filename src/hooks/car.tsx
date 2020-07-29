@@ -14,9 +14,9 @@ import { ICar } from '../components/Car';
 
 interface ICarProviderProps {
   cars: ICar[];
-  addCar: (car: Omit<ICar, '_id'>) => void;
-  updateCar: (car: ICar) => void;
-  deleteCar: () => void;
+  addCar: (car: Omit<ICar, '_id'>) => Promise<void>;
+  updateCar: (car: ICar) => Promise<void>;
+  deleteCar: () => Promise<void>;
   carToBeDeleted: string;
   setCarToBeDeleted: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -27,51 +27,79 @@ const CarProvider: React.FC = ({ children }) => {
   const [cars, setCars] = useState<ICar[]>([]);
   const [carToBeDeleted, setCarToBeDeleted] = useState('');
 
-  const { handlePagination, currentPage, setCurrentPage } = usePagination();
+  const { handlePagination } = usePagination();
   const { carsFound, setCarsFound } = useFilter();
 
   const addCar = useCallback(
     async ({ title, brand, price, age }: Omit<ICar, '_id'>) => {
-      const { data } = await api.post<ICar>('/cars', {
-        title,
-        brand,
-        price,
-        age,
-      });
+      // const { data } = await api.post<ICar>('/cars', {
+      //   title,
+      //   brand,
+      //   price,
+      //   age,
+      // });
 
-      // const data = { _id: '99', title, brand, price, age };
+      const data = { _id: '99', title, brand, price, age };
+
+      if (carsFound.length) {
+        setCars(oldState => [...oldState, data]);
+        setCarsFound(oldState => [...oldState, data]);
+        handlePagination([...carsFound, data]);
+
+        return;
+      }
 
       setCars(oldState => [...oldState, data]);
       handlePagination([...cars, data]);
     },
-    [cars, handlePagination]
+    [cars, handlePagination, setCarsFound, carsFound]
   );
 
   const updateCar = useCallback(
     async ({ _id, title, brand, price, age }: ICar) => {
-      const copyCars = cars;
-      const indexOfCar = cars.findIndex(findCar => findCar._id === _id);
-      const car = cars.find(findCar => findCar._id === _id);
+      const updatedCarList = cars;
+      const indexOfCar = cars.findIndex(car => car._id === _id);
+      const data1 = cars.find(car => car._id === _id);
 
-      copyCars[indexOfCar] = Object.assign(car, { title, brand, price, age });
+      // const { data } = await api.put<ICar>(`/cars/${_id}`, {
+      //   title,
+      //   brand,
+      //   price,
+      //   age,
+      // });
 
-      await api.put(`/cars/${_id}`, {
+      updatedCarList[indexOfCar] = Object.assign(data1, {
         title,
         brand,
         price,
         age,
       });
 
-      setCars(copyCars);
+      if (carsFound.length) {
+        const updatedCarListFound = carsFound;
+        const indexOfCarFound = carsFound.findIndex(car => car._id === _id);
+        updatedCarListFound[indexOfCarFound] = Object.assign(data1, {
+          title,
+          brand,
+          price,
+          age,
+        });
 
-      handlePagination(copyCars);
+        setCarsFound(updatedCarListFound);
+        setCars(updatedCarList);
+        handlePagination(updatedCarListFound);
+
+        return;
+      }
+
+      setCars(updatedCarList);
+
+      handlePagination(updatedCarList);
     },
-    [cars, handlePagination]
+    [cars, handlePagination, carsFound, setCarsFound]
   );
-  console.log(carsFound);
-  const deleteCar = useCallback(async () => {
-    // await api.delete(`/cars/${carToBeDeleted}`);
 
+  const deleteCar = useCallback(async () => {
     let updatedCarList: ICar[] = [];
 
     if (carsFound.length > 0) {
@@ -80,6 +108,8 @@ const CarProvider: React.FC = ({ children }) => {
       );
 
       updatedCarList = cars.filter(car => car._id !== carToBeDeleted);
+
+      // await api.delete(`/cars/${carToBeDeleted}`);
 
       setCarsFound(updatedCarListFound);
       setCars(updatedCarList);

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Form as Unform } from '@unform/web';
 import { shade } from 'polished';
+import { css } from '@emotion/core';
 
 export const Form = styled(Unform)`
   padding: 16px 40px;
@@ -35,7 +36,7 @@ export const Form = styled(Unform)`
     &:hover {
       background-color: ${shade(0.2, '#00cb76')};
 
-      div {
+      span {
         background-color: ${shade(0.3, '#00cb76')};
       }
     }
@@ -47,8 +48,8 @@ export const Form = styled(Unform)`
       color: #fff;
     }
 
-    div {
-      width: 100%;
+    span {
+      width: 60px;
       height: 44px;
       padding: 0 16px;
       border-radius: 0 4px 4px 0;
@@ -57,6 +58,13 @@ export const Form = styled(Unform)`
 
       display: flex;
       align-items: center;
+      justify-content: center;
     }
   }
+`;
+
+export const beatLoaderStyles = css`
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
 `;
